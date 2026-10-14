@@ -1,0 +1,24 @@
+[
+  {
+    "key": "lewis2020",
+    "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+    "authors": ["Patrick Lewis", "Ethan Perez", "Aleksandra Piktus", "Fabio Petroni", "Vladimir Karpukhin", "Naman Goyal", "Heinrich Küttler", "Mike Lewis", "Wen-tau Yih", "Tim Rocktäschel", "Sebastian Riedel", "Douwe Kiela"],
+    "year": 2020,
+    "doi": "10.48550/arXiv.2005.11401",
+    "url": "https://arxiv.org/abs/2005.11401",
+    "metadata_source": "https://arxiv.org/abs/2005.11401",
+    "checked_at": "2026-10-14",
+    "note": "作者、标题、首次提交年份与 arXiv 元数据核对；arXiv DOI 由 DataCite 注册，不是 Crossref DOI。"
+  },
+  {
+    "key": "thakur2021",
+    "title": "BEIR: A Heterogenous Benchmark for Zero-shot Evaluation of Information Retrieval Models",
+    "authors": ["Nandan Thakur", "Nils Reimers", "Andreas Rücklé", "Abhishek Srivastava", "Iryna Gurevych"],
+    "year": 2021,
+    "doi": "10.48550/arXiv.2104.08663",
+    "url": "https://arxiv.org/abs/2104.08663",
+    "metadata_source": "https://arxiv.org/abs/2104.08663",
+    "checked_at": "2026-10-14",
+    "note": "只作为评价范围与基线意识的背景文献；此演示未运行 BEIR 数据集。"
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "title": "第一次检索实验：先记录，再下结论",
+  "question": "在一份自编英文教学语料上，关键词重叠和 TF-IDF 的排序表现有什么不同？",
+  "stage": "teaching-demo"
+}

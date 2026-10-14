@@ -1,0 +1,14 @@
+name: Improve a research workflow step
+description: Tell us where the learning or research process gets confusing
+body:
+  - type: textarea
+    id: step
+    attributes:
+      label: Which step are you trying to complete?
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Current input, attempted steps and proposed outcome
+      description: Use public or synthetic examples only.

@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "papertrail-research"
+version = "0.1.0"
+description = "A local, evidence-first research workflow: citations, experiments, and a shareable audit report."
+readme = "README.en.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "lashonbakker-crypto"}]
+keywords = ["research", "reproducibility", "citations", "academic-writing"]
+classifiers = ["Programming Language :: Python :: 3", "Operating System :: OS Independent"]
+dependencies = []
+
+[project.scripts]
+papertrail = "papertrail.cli:main"
+
+[project.urls]
+Repository = "https://github.com/lashonbakker-crypto/papertrail-research"
+Issues = "https://github.com/lashonbakker-crypto/papertrail-research/issues"
+
+[tool.setuptools.packages.find]
+include = ["papertrail*"]
+
+[tool.setuptools.package-data]
+papertrail = ["templates/demo/*", "templates/demo/data/*"]

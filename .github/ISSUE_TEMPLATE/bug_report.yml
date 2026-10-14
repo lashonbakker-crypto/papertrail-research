@@ -1,0 +1,20 @@
+name: Report a reproducible problem
+description: A command, import, or check you could not complete
+body:
+  - type: textarea
+    id: command
+    attributes:
+      label: Command and minimal public input
+      description: Remove private research data and secrets.
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Expected and actual output
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Python version, OS and PaperTrail version

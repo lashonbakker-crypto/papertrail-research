@@ -1,0 +1,48 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: papertrail-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.12"
+      - name: Confirm this commit passed the matrix CI
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/ci.yml/runs?head_sha=$GITHUB_SHA&status=success&per_page=10" > ci-runs.json
+          python -c "import json; r=json.load(open('ci-runs.json')); assert any(w['head_sha']=='${{ github.sha }}' and w['conclusion']=='success' for w in r['workflow_runs']), 'Current source has not passed matrix CI'"
+          rm ci-runs.json
+      - name: Test and build
+        run: |
+          python -m unittest discover -s tests -v
+          python scripts/build_release.py
+          echo "RELEASE_TAG=v$(python -c 'from papertrail import __version__; print(__version__)')" >> "$GITHUB_ENV"
+      - name: Publish tested downloads
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "::error::Existing releases will not be overwritten."
+            exit 1
+          fi
+          gh release create "$RELEASE_TAG" dist/papertrail.pyz "dist/papertrail-research-$RELEASE_TAG.zip" dist/SHA256SUMS.txt --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "PaperTrail $RELEASE_TAG · From references to reproducible research" --notes-file "docs/releases/$RELEASE_TAG.md" --latest

@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+.env*
+my-first-study/
+my-research/
+portable-study/
+report*/
+*.db
+*.sqlite*
+*.pdf

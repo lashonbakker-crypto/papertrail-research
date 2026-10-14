@@ -1,0 +1,10 @@
+[
+  {"id": "d01", "text": "JSON precision. Preserve large integers and decimal numeric tokens when formatting data. Reject duplicate object keys and non finite numbers. Formatting must not change numeric values."},
+  {"id": "d02", "text": "JSONL streaming. Each line contains one JSON record. Validate every line and report the invalid line number. An upstream generator can stop early even when received records are valid."},
+  {"id": "d03", "text": "Retrieval augmented generation. Retrieve external documents and passages before generating an answer. Keep evidence sources and citation links. Retrieval ranking and answer factuality need separate evaluation."},
+  {"id": "d04", "text": "Paper references. A DOI can resolve bibliographic metadata such as title authors and publication year. A citation key links a manuscript to its reference. Read the original paper before using an evidence claim."},
+  {"id": "d05", "text": "Idempotent tasks. A task may execute again after a worker crash. Use an idempotency key to avoid repeated side effects. Retrying a failed task is not exactly once execution."},
+  {"id": "d06", "text": "Data leakage. Split training validation and test data before model selection. Fit preprocessing on the training split. Keep held out test labels away from tuning and report limitations of a small dataset."},
+  {"id": "d07", "text": "Server sent events. Persist ordered events with cursor ids. Deliver the final success failure or cancellation event before ending a stream. Reconnect with the last event id to replay missed events."},
+  {"id": "d08", "text": "File integrity. Compare a downloaded file SHA256 digest with the published checksum. A digest checks content integrity but does not authenticate the author. Duplicate file candidates can also be compared byte by byte."}
+]

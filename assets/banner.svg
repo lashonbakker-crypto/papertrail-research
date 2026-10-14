@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="420" viewBox="0 0 1280 420" role="img" aria-label="PaperTrail: from references to reproducible research">
+  <rect width="1280" height="420" rx="28" fill="#102239"/>
+  <circle cx="1180" cy="30" r="270" fill="#18354c"/>
+  <circle cx="1180" cy="30" r="200" fill="none" stroke="#27526a" stroke-width="2"/>
+  <g font-family="system-ui, sans-serif">
+    <text x="66" y="69" fill="#83ddc5" font-size="16" font-weight="700" letter-spacing="4">RESEARCH WITH A RECORD</text>
+    <text x="62" y="163" fill="#f4f8ff" font-size="77" font-weight="800">PaperTrail</text>
+    <text x="66" y="215" fill="#c9d8e8" font-size="27">From references to reproducible research.</text>
+    <text x="66" y="259" fill="#c9d8e8" font-size="24">从文献到论文，让每一步都有记录。</text>
+    <g font-size="15" font-weight="600">
+      <rect x="66" y="309" width="218" height="43" rx="12" fill="#1c3b4a"/>
+      <text x="85" y="337" fill="#8be1c7">REFERENCES → EVIDENCE</text>
+      <rect x="300" y="309" width="220" height="43" rx="12" fill="#1c3b4a"/>
+      <text x="319" y="337" fill="#8be1c7">EXPERIMENTS → DRAFT</text>
+      <rect x="536" y="309" width="165" height="43" rx="12" fill="#1c3b4a"/>
+      <text x="557" y="337" fill="#8be1c7">LOCAL · PYTHON</text>
+    </g>
+  </g>
+  <g transform="translate(860 110)">
+    <rect x="24" y="15" width="235" height="216" rx="22" fill="#214457"/>
+    <rect x="0" y="0" width="235" height="216" rx="22" fill="#f3f7fc"/>
+    <rect x="23" y="24" width="74" height="10" rx="5" fill="#249b81"/>
+    <rect x="23" y="52" width="176" height="8" rx="4" fill="#a9b9ca"/>
+    <rect x="23" y="70" width="144" height="8" rx="4" fill="#cfdae5"/>
+    <rect x="23" y="100" width="188" height="87" rx="11" fill="#e3edf4"/>
+    <rect x="37" y="149" width="30" height="24" rx="4" fill="#67c8ae"/>
+    <rect x="80" y="131" width="30" height="42" rx="4" fill="#42b89a"/>
+    <rect x="123" y="113" width="30" height="60" rx="4" fill="#23997e"/>
+    <circle cx="225" cy="17" r="29" fill="#83ddc5"/>
+    <path d="M213 17l8 8 16-18" fill="none" stroke="#102239" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

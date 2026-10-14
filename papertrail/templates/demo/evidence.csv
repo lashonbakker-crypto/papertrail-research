@@ -1,0 +1,3 @@
+claim_id,text,reference_key,locator,note,reviewed
+C1,RAG 的设计把模型的参数记忆与外部检索记忆结合起来。,lewis2020,arXiv abstract；概念说明,此处只解释系统设计；本项目的教学实验没有运行语言模型。,yes
+C2,检索评价需要关注任务与领域范围；单一小数据不能说明广泛泛化能力。,thakur2021,arXiv abstract；评价动机,BEIR 使用多种任务和领域作为评价背景；本演示没有使用其基准数据。,yes

@@ -1,0 +1,14 @@
+[
+  {"id": "q01", "text": "preserve large JSON integers and decimal tokens", "relevant": "d01"},
+  {"id": "q02", "text": "validate each streaming line and report invalid record", "relevant": "d02"},
+  {"id": "q03", "text": "retrieve external passages before generating an answer", "relevant": "d03"},
+  {"id": "q04", "text": "resolve a paper title authors and year using DOI", "relevant": "d04"},
+  {"id": "q05", "text": "avoid repeated side effects after retrying a task", "relevant": "d05"},
+  {"id": "q06", "text": "keep test labels away from training and tuning", "relevant": "d06"},
+  {"id": "q07", "text": "reconnect stream and replay the final event", "relevant": "d07"},
+  {"id": "q08", "text": "compare downloaded file checksum and SHA256 digest", "relevant": "d08"},
+  {"id": "q09", "text": "a worker crash does not imply exactly once execution", "relevant": "d05"},
+  {"id": "q10", "text": "citation key links original paper evidence to manuscript", "relevant": "d04"},
+  {"id": "q11", "text": "compare file candidates byte by byte", "relevant": "d08"},
+  {"id": "q12", "text": "valid JSON records but generator can stop early", "relevant": "d02"}
+]
