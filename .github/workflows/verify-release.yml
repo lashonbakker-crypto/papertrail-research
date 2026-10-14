@@ -1,0 +1,43 @@
+name: Verify published downloads
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Published tag to download and verify
+        required: true
+        default: v0.1.1
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Download / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-15-intel]
+    env:
+      PAPERTRAIL_RELEASE_TAG: ${{ inputs.tag }}
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - name: Check out verification tooling
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Check out exact released source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ inputs.tag }}
+          path: released-source
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.12"
+      - name: Download, compare to tag and run success/error cases
+        run: python scripts/verify_release.py

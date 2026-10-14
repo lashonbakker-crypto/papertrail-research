@@ -160,6 +160,14 @@ class CommandTests(unittest.TestCase):
             self.assertEqual(0, result.returncode, result.stderr)
             self.assertTrue((target / "data/queries.json").is_file())
             self.assertTrue((target / "report/draft.md").is_file())
+            invalid = subprocess.run([sys.executable, str(ROOT / "dist/papertrail.pyz"), "check", str(Path(directory) / "missing"), "--json"], cwd=directory, capture_output=True, text=True, encoding="utf-8")
+            self.assertEqual(2, invalid.returncode, invalid.stdout)
+            self.assertTrue(json.loads(invalid.stdout)["errors"])
+            with (target / "manuscript.md").open("a", encoding="utf-8") as handle:
+                handle.write("\n[@notExists2026]\n")
+            broken = subprocess.run([sys.executable, str(ROOT / "dist/papertrail.pyz"), "check", str(target), "--json"], cwd=directory, capture_output=True, text=True, encoding="utf-8")
+            self.assertEqual(2, broken.returncode, broken.stdout)
+            self.assertIn("missing_reference", {item["code"] for item in json.loads(broken.stdout)["errors"]})
 
 
 if __name__ == "__main__":

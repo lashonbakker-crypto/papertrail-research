@@ -2,11 +2,11 @@
 
 你可以把 PaperTrail 理解为一个科研资料检查员：一条论点对应哪篇文献、一个数值对应哪次实验，都有记录能查。
 
-## 从本次交付包运行
+## 从离线包或源码归档运行
 
 需要 Python 3.10 或以上，不需要安装第三方包，也不需要 API key。
 
-解压 `PaperTrail_v0.1.0_bundle.zip`，打开解压后的文件夹终端：
+使用完整离线包时先解压；使用 Release 源码归档 `papertrail-research-v0.1.1.zip` 时同样先解压。打开解压后的文件夹终端：
 
 ```bash
 cd papertrail-research
@@ -30,4 +30,4 @@ python -m papertrail demo my-first-study
 
 准备大创、进课题组或整理保研科研材料时，先用它记录自己实际读过、做过、能解释的内容。代码会核对选定结构和文件的一致性；研究问题是否有价值、文献是否支持论点、实验是否公平，仍要你和导师判断。
 
-也可以从 GitHub 克隆源码，或从 Release 下载 `papertrail.pyz`，按[命令说明](03-cli.md)校验后运行。若下载源码归档 `papertrail-research-v0.1.0.zip`，解压后进入其中的 `papertrail-research` 目录，运行同一条 demo 命令。实际验证状态见[验证记录](validation.md)。
+也可以从 GitHub 克隆源码，或从最新 Release 下载 `papertrail.pyz`，按[命令说明](03-cli.md)校验后运行。单文件版请选择 `v0.1.1` 或以上，以获得正确的错误退出码。实际验证状态见[验证记录](validation.md)。

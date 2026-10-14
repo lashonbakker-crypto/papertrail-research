@@ -10,10 +10,15 @@
 
 ## Next small contributions
 
+0. A runnable CSL-JSON import example for beginners ([Issue #1](https://github.com/lashonbakker-crypto/papertrail-research/issues/1)).
 1. A validated external experiment adapter: map a real CSV result to the record schema without inventing measurements.
 2. Evidence cards with multiple sources and per-source locators.
 3. A larger public, permissively licensed evaluation example with separate development/evaluation splits.
-4. Release-asset download verification on Linux, Windows and macOS.
+
+## Implemented in 0.1.1
+
+- Portable commands propagate successful and failing exit codes.
+- Repeatable published-asset verification workflow for Linux, Windows and Intel macOS; actual results are kept in docs/validation.md.
 
 ## Later, requiring design and separate validation
 

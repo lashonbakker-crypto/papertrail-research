@@ -17,7 +17,8 @@ def main():
     with tempfile.TemporaryDirectory() as directory:
         staging = Path(directory)
         shutil.copytree(ROOT / "papertrail", staging / "papertrail", ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
-        zipapp.create_archive(staging, destination / "papertrail.pyz", main="papertrail.cli:main", compressed=True)
+        (staging / "__main__.py").write_text("from papertrail.cli import main\nraise SystemExit(main())\n", encoding="utf-8", newline="\n")
+        zipapp.create_archive(staging, destination / "papertrail.pyz", compressed=True)
     print(f"Built papertrail {__version__}: {destination / 'papertrail.pyz'}")
 
 

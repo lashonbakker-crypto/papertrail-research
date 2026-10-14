@@ -7,6 +7,7 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote
 from urllib.request import Request, urlopen
 
+from . import __version__
 from .storage import LIMIT, ProjectError, json_text, project_path, read_json, replace_text
 
 KEY_PATTERN = re.compile(r"[A-Za-z][A-Za-z0-9_.:-]*\Z")
@@ -86,7 +87,7 @@ def import_csl(root, source):
 def fetch_doi(doi, timeout=15):
     doi = normalize_doi(doi)
     endpoint = "https://api.crossref.org/works/" + quote(doi, safe="")
-    request = Request(endpoint, headers={"User-Agent": "PaperTrail/0.1.0 (https://github.com/lashonbakker-crypto/papertrail-research)", "Accept": "application/json"})
+    request = Request(endpoint, headers={"User-Agent": f"PaperTrail/{__version__} (https://github.com/lashonbakker-crypto/papertrail-research)", "Accept": "application/json"})
     try:
         with urlopen(request, timeout=timeout) as response:
             payload = response.read(LIMIT + 1)

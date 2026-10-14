@@ -6,6 +6,7 @@ import re
 from pathlib import Path
 from urllib.parse import urlsplit
 
+from . import __version__
 from .storage import ProjectError, json_text, write_new
 
 
@@ -65,7 +66,7 @@ def render_html(result):
 <div class="stats">{cards}</div><section><h2>01 / 提交给导师前，先看这里</h2><p class="section-note">结构检查记录引用和附件是否对得上。元数据核对、人工阅读登记、研究有效性是不同的事情。</p>{issues}</section>
 <section><h2>02 / 结果可追溯</h2><p class="section-note">MRR 与 Recall 坐标固定为 0–1；教学数据与真实研究必须区分。图表只展示登记值，不能证明方法优越性。</p>{chart}{runs}</section>
 <section><h2>03 / 论点背后的证据</h2>{evidence}</section><section><h2>04 / 文献来源</h2>{refs}</section>
-<footer>PaperTrail 0.1.0 · 本地生成，零外部资源 · SHA-256 检查内容一致性，不能证明数据真实性或发布者身份</footer></main></body></html>'''
+<footer>PaperTrail {escape(__version__)} · 本地生成，零外部资源 · SHA-256 检查内容一致性，不能证明数据真实性或发布者身份</footer></main></body></html>'''
 
 
 def render_markdown(result):
