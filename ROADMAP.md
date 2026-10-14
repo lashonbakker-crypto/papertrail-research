@@ -10,10 +10,10 @@
 
 ## Next small contributions
 
-0. A runnable CSL-JSON import example for beginners ([Issue #1](https://github.com/lashonbakker-crypto/papertrail-research/issues/1)).
-1. A validated external experiment adapter: map a real CSV result to the record schema without inventing measurements.
-2. Evidence cards with multiple sources and per-source locators.
-3. A larger public, permissively licensed evaluation example with separate development/evaluation splits.
+1. A runnable CSL-JSON import example for beginners ([Issue #1](https://github.com/lashonbakker-crypto/papertrail-research/issues/1)).
+2. A validated external experiment adapter: map a real CSV result to the record schema without inventing measurements.
+3. Evidence cards with multiple sources and per-source locators.
+4. A larger public, permissively licensed evaluation example with separate development/evaluation splits.
 
 ## Implemented in 0.1.1
 
