@@ -14,11 +14,20 @@
 
 ## 发布状态
 
-用户已允许公开发布。正在创建仓库并上传首版代码，远程 CI 与 Release 将按下面的待核实项逐项验证，不把本地验证当作远程结果。
+公开仓库已经创建，51 个项目文件已上传。首轮矩阵 CI 完成且全部成功：[run 38521684140](https://github.com/lashonbakker-crypto/papertrail-research/actions/runs/38521684140)，对应提交 `f3057ab24e125c50f39a4af85d3796e877f02976`。
+
+| 环境 | 行为测试 | 包安装与源码目录外运行 | 单文件包构建与实际 demo |
+|---|---|---|---|
+| Linux / Python 3.10 | 通过 | 通过 | 通过 |
+| Linux / Python 3.12 | 通过 | 通过 | 通过 |
+| Linux / Python 3.14 | 通过 | 通过 | 通过 |
+| Windows / Python 3.12 | 通过 | 通过 | 通过 |
+| Intel macOS / Python 3.12 | 通过 | 通过 | 通过 |
+
+macOS 使用 Intel 运行器，本轮不宣称 Apple Silicon 验证。Release 与实际下载附件仍按下面的待核实项继续检查。
 
 ## 仍需实际核实
 
-- 新仓库 Linux 3.10/3.12/3.14、Windows 3.12、Intel macOS 3.12 的远程 CI。
 - 正式发布附件下载复验；本轮仅复核本地生成的交付包。
 - CLI 的真实 Crossref 网络请求未在本地执行环境完成；在线文档和背景文献元数据已核对。
 
