@@ -8,6 +8,10 @@
 - Original toy retrieval data and computed ranking results.
 - Chinese workflow, student learning steps and contribution templates.
 
+## Implemented after 0.2.0 (unreleased)
+
+- Read-only evidence coverage report and optional action list (`coverage`), with machine-readable JSON output and tests.
+
 ## Next small contributions
 
 1. Evidence cards with multiple sources and per-source locators.
