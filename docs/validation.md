@@ -7,7 +7,15 @@
 - 0.2.0 在独立虚拟环境构建并安装，源码目录外的模块、命令、资源、检索实验、自定义 CSV 导入与检查通过；未下载运行时依赖。
 - 本地构建 0.2.0 源码包和 pyz，并运行发布验证器：核对校验文件、源码文件集合与字节、单文件包、版本、正常/错误命令、导入后的快照篡改失败，以及解压源码后的课程例子。这里检查的是本地构建物；正式下载验证另列。
 - 自带 CSL-JSON 的两条公开元数据导入通过，保持未独立核对状态，不伪填人工阅读完成。空白项目的引用语法说明改为代码文本，避免假缺失引用。
-- 远端 CI 与正式 Release 下载状态以对应 Actions 实际执行为准；下面 0.1.1 的记录仅代表历史版本。
+- HTML 报告的内容、图表数值和转义由测试检查；当前浏览器禁止打开本地 file URL，未完成报告渲染目检。
+
+## 0.2.0 远端 CI 与正式下载 — 2026-10-16
+
+- 功能提交 `f60de440b2f92343174ebc697627ce7d7b8f07a7` 的 [矩阵 CI 38844789070](https://github.com/lashonbakker-crypto/papertrail-research/actions/runs/38844789070) 全部通过：Linux / Python 3.10、3.12、3.14；Windows / 3.12；Intel macOS / 3.12。每组包含 73 项行为测试、安装后源码目录外的入口/导入验证、单文件构建与课程例子。
+- [发布工作流 38844919565](https://github.com/lashonbakker-crypto/papertrail-research/actions/runs/38844919565) 确认精确提交的 CI 通过后构建并发布 [v0.2.0](https://github.com/lashonbakker-crypto/papertrail-research/releases/tag/v0.2.0)，包含源码包、pyz 和 SHA256SUMS.txt。
+- [公开附件下载复验 38845066135](https://github.com/lashonbakker-crypto/papertrail-research/actions/runs/38845066135) 在 Linux、Windows、Intel macOS 三组 Python 3.12 环境全部通过。逐组检查了实际 job 与日志。
+- 下载复验实际从公开 Release 获取三份附件，核对两个程序附件的 SHA-256、源码归档的 **63 个文件**与精确标签的 Git blob、pyz 包内字节和入口、版本、源码目录外正常/错误退出码。另验证 CSV 导入与快照原字节、篡改快照后退出 2，以及解压源码课程例子计算出的 0.25 / 0.75。
+- 下载检查使用发布附件，不使用本地重建替代品；不宣称 Apple Silicon、生产规模、Crossref 实际请求或研究结论有效性。下面 0.1.1 的执行记录仅代表历史版本。
 
 ## 0.1.1 历史记录 — 2026-10-14
 
@@ -22,7 +30,7 @@
 
 ## 已发布源码的矩阵 CI
 
-最新功能版本提交为 `8cd2cd35d73eeb809e4c09fabe8388bc2a43ff8d`；[run 38523789446](https://github.com/lashonbakker-crypto/papertrail-research/actions/runs/38523789446) 的五组环境全部成功。
+0.1.1 功能版本提交为 `8cd2cd35d73eeb809e4c09fabe8388bc2a43ff8d`；[run 38523789446](https://github.com/lashonbakker-crypto/papertrail-research/actions/runs/38523789446) 的五组环境全部成功。
 
 | 环境 | 行为测试 | 安装与源码目录外入口 | 单文件构建和 demo |
 |---|---|---|---|
