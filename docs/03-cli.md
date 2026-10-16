@@ -10,6 +10,7 @@
 | `report PROJECT [--out NEW_DIR]` | 先检查，再导出 HTML/JSON/两份 Markdown | 本地只读输入、写新报告目录 |
 | `experiment PROJECT [--run-id NEW_ID]` | 运行自编英文语料的两种词法检索 | 本地写新附件并更新 experiments.csv |
 | `import-csl PROJECT EXPORT.json` | 导入 CSL-JSON 文献 | 本地读取导出，原子替换 references.json；碰撞不保存 |
+| `import-results PROJECT RESULTS.csv --run-id ID --dataset TEXT --command TEXT --label toy/real [--input PATH ...]` | 保存自算指标 CSV 原始快照、映射和可选输入指纹，不执行命令 | 本地写新附件、原子替换 experiments.csv；[完整教程](05-own-experiments.md) |
 | `add-doi PROJECT DOI --key KEY` | 从 Crossref 查询并加入单条元数据 | 显式 HTTPS 网络请求；成功才更新文献表 |
 
 退出码 `0` 表示本命令的结构检查或操作完成；存在提醒仍可为 `0`。退出码 `2` 表示输入错误、发现结构问题、网络失败或拒绝覆盖。`report` 即使检查有错也会导出问题报告，再返回 `2`。
@@ -19,7 +20,10 @@
 ## 文件约定
 
 UTF-8 JSON、CSV、Markdown；读取可接受一个 UTF-8 BOM。JSON 拒绝重复键和非有限数；CSV 列名和顺序必须与模板一致，行列数不对会报错。
+CSV 畸形引号、字段超出解析器限制或列数错误会返回受控错误。
 引用键/claim ID/run ID：ASCII 字母开头，后续允许字母、数字、`_ . : -`。
+
+新的 import-results 分组 ID 为跨平台文件名：ASCII 字母开头，后续只允许字母、数字、`_ -`，最多 64 字符，拒绝设备名；生成的结果 ID 为 GROUP-001 等。自带 CSL 练习见[Zotero 导入](06-zotero-import.md)。
 
 正文引用支持方括号中的 `[@key]` 和 `[@one; @two]`；不完整模拟全部 Pandoc Markdown 语法。跳过代码围栏、行内代码和 HTML 注释。单条实验记录对应一个指标。
 
@@ -46,6 +50,6 @@ python papertrail.pyz --version
 python papertrail.pyz demo my-first-study
 ```
 
-应看到 `SHA-256 OK` 与 `papertrail 0.1.1`。校验文件同时列出单文件版和源码包，上述命令只核对 `papertrail.pyz`，不要求你下载源码包。校验失败时重新获取同一 Release 的两份附件，校验通过后再运行。它检查下载内容，不是作者身份签名。pyz 仍需要 Python 3.10+。
+应看到 `SHA-256 OK` 与 `papertrail 0.2.0`。校验文件同时列出单文件版和源码包，上述命令只核对 `papertrail.pyz`，不要求你下载源码包。校验失败时重新获取同一 Release 的两份附件，校验通过后再运行。它检查下载内容，不是作者身份签名。pyz 仍需要 Python 3.10+。
 
 `v0.1.0` 的单文件入口曾忽略命令返回码，发现错误时仍可能返回 `0`。使用 `v0.1.1` 或以上：正常检查为 `0`，未知引用或不存在的项目应返回 `2`；终端输出和进程状态都要检查。

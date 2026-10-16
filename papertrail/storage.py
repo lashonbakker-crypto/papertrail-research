@@ -60,13 +60,23 @@ def json_text(value):
 
 
 def read_csv(path, fields):
-    reader = csv.DictReader(io.StringIO(read_text(path), newline=""))
-    if reader.fieldnames != list(fields):
-        raise ProjectError(f"CSV header must be {','.join(fields)}: {path}")
-    rows = list(reader)
+    return csv_rows(read_bytes(path), fields, str(path))
+
+
+def csv_rows(data, fields, source="CSV"):
+    """Parse one bounded UTF-8 CSV, including quoting and field-size errors."""
+    if len(data) > LIMIT:
+        raise ProjectError(f"File exceeds {LIMIT} bytes: {source}")
+    try:
+        reader = csv.DictReader(io.StringIO(data.decode("utf-8-sig"), newline=""), strict=True)
+        if reader.fieldnames != list(fields):
+            raise ProjectError(f"CSV header must be {','.join(fields)}: {source}")
+        rows = list(reader)
+    except csv.Error as error:
+        raise ProjectError(f"Invalid CSV in {source}: {error}") from error
     for number, row in enumerate(rows, 2):
         if None in row or any(value is None for value in row.values()):
-            raise ProjectError(f"Invalid CSV column count at row {number}: {path}")
+            raise ProjectError(f"Invalid CSV column count at record {number}: {source}")
     return rows
 
 

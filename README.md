@@ -25,8 +25,9 @@
 |---|---|
 | 看了很多文献，写时记不起哪篇支持哪句话 | 用 `evidence.csv` 记录论点、引用键、章节定位和自己的阅读笔记 |
 | AI 或手工写了一个不存在的引用键 | `check` 检查正文中的 `[@key]` 是否存在，指出缺失来源 |
-| 实验结果复制错了、原始文件变了 | 核对结果附件 SHA-256；内置实验额外核对原始数值和输入数据 |
+| 实验结果复制错了、原始文件变了 | 导入自己的结果 CSV，保存原始快照，核对数值、附件和可选输入指纹 |
 | 文献在 Zotero，草稿在另一个工具 | 导入标准 CSL-JSON；生成适合后续 Pandoc/编辑器处理的 Markdown 草稿 |
+| 已有自己的实验，怎么连接到草稿 | `import-results` 登记实际指标；`{{run:ID}}` 在报告草稿中展开 |
 | 不知道第一次实验从哪开始 | 一条命令运行 8 个文档 / 12 个查询的英文检索教学实验 |
 | 组会和申请材料只剩一个 PDF | 导出可视化 HTML 检查报告、JSON 结果和 Markdown 科研交接记录 |
 
@@ -81,6 +82,22 @@ python -m papertrail check my-first-study
 python -m papertrail report my-first-study --out my-first-study/report-v2
 ```
 
+## 接上你自己的实验
+
+```bash
+python scripts/course_example.py course-study
+```
+
+这会**实际运行**一个自编课程分类实验：仅用训练行选择模型，计算四条测试记录的 accuracy（多数类 `0.25`、阈值分类器 `0.75`），保留数据、程序和逐条预测，导入后生成报告。它是教学流程示例，不能当成真实科研结论；完整步骤和失败练习见[自己的实验](docs/05-own-experiments.md)。
+
+已有指标 CSV 时，使用固定列 `method,metric,value,n`：
+
+```bash
+python -m papertrail import-results my-research results.csv --run-id trial1 --dataset "具体数据版本与切分" --label toy --command "python my_experiment.py"
+```
+
+先创建 `my-research` 并准备你实际计算的 `results.csv`。可重复 `--input data/FILE` 登记项目内数据/代码的指纹。`toy/real` 是显式自报，命令只记录不执行；检查结果一致不等于独立复现。源码包含完整课程练习，单文件版也支持指标导入。
+
 ## 开始自己的课题
 
 ```bash
@@ -89,7 +106,9 @@ python -m papertrail import-csl my-research zotero-export.json
 python -m papertrail check my-research
 ```
 
-在 Zotero 中选择需要的条目，右键导出，格式选择 **CSL JSON**。这是元数据导入，阅读笔记由你自己填写。引用键取 `citation-key` 或合法 `id`，不合法时生成 `ref1` 等键；重复键或 DOI 会拒绝整个导入，不静默覆盖。
+想先用公开元数据练习，可直接运行[自带的 CSL-JSON 示例](docs/06-zotero-import.md)，再换成自己的导出文件。
+
+在 Zotero 中选择需要的条目，右键导出，格式选择 **CSL JSON**。这是元数据导入，阅读笔记由你自己填写。引用键优先取已提供的 `citation-key`，否则取 `id`；选中的值不合法时生成 `ref1` 等键；重复键或 DOI 会拒绝整个导入，不静默覆盖。
 
 还可以明确选择联网，从 Crossref 获取单条 DOI 的标题、作者和年份：
 
@@ -113,7 +132,7 @@ python -m papertrail add-doi my-research 10.1038/nature14539 --key lecun2015
 
 ## 检查范围与目前限制
 
-- 检查引用键、证据定位登记、结构化结果、文件内容指纹和已知实验数值。`reviewed=yes` 是人工登记，不是机器判定论文正确。
+- 检查引用键、证据定位登记、结构化结果、文件内容指纹和已知实验数值；导入 CSV 会从保存的原始快照复核记录，外部命令仍需独立复现。未知附件结构只核对指纹并提醒。`reviewed=yes` 是人工登记，不是机器判定论文正确。
 - 普通文本中的任意数字、文献是否真正支持结论、创新性、因果性、撤稿状态和期刊排版需要人工或专门工具处理。
 - 内置实验是很容易的自编英文词法检索小样本：两种方法的 MRR / Recall@1 / Recall@3 均为 `1.0`。没有独立测试集，没有运行 RAG、BEIR 或语言模型，不能据此判断方法优越性。
 - 不执行表里的命令，不追踪符号链接；项目文件单个上限 8 MiB。没有并发写入锁或文件系统快照，操作期间请不要同时修改输入。
@@ -123,6 +142,7 @@ python -m papertrail add-doi my-research 10.1038/nature14539 --key lecun2015
 
 ```bash
 python -m unittest discover -s tests -v
+python scripts/course_example.py
 python scripts/build_zipapp.py
 python dist/papertrail.pyz demo portable-study
 ```

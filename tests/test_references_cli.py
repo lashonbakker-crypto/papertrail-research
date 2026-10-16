@@ -160,6 +160,13 @@ class CommandTests(unittest.TestCase):
             self.assertEqual(0, result.returncode, result.stderr)
             self.assertTrue((target / "data/queries.json").is_file())
             self.assertTrue((target / "report/draft.md").is_file())
+            source = Path(directory) / "results.csv"
+            source.write_text("method,metric,value,n\nfixture,accuracy,0.75,4\n", encoding="utf-8")
+            command = [sys.executable, str(ROOT / "dist/papertrail.pyz"), "import-results", str(target), str(source),
+                       "--run-id", "portable", "--dataset", "fixture", "--label", "toy", "--command", "NOT_EXECUTED"]
+            imported = subprocess.run(command, cwd=directory, capture_output=True, text=True, encoding="utf-8")
+            self.assertEqual(0, imported.returncode, imported.stderr)
+            self.assertEqual(source.read_bytes(), (target / "artifacts/portable.source.csv").read_bytes())
             invalid = subprocess.run([sys.executable, str(ROOT / "dist/papertrail.pyz"), "check", str(Path(directory) / "missing"), "--json"], cwd=directory, capture_output=True, text=True, encoding="utf-8")
             self.assertEqual(2, invalid.returncode, invalid.stdout)
             self.assertTrue(json.loads(invalid.stdout)["errors"])

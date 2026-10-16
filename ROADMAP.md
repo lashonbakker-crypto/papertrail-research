@@ -10,15 +10,22 @@
 
 ## Next small contributions
 
-1. A runnable CSL-JSON import example for beginners ([Issue #1](https://github.com/lashonbakker-crypto/papertrail-research/issues/1)).
-2. A validated external experiment adapter: map a real CSV result to the record schema without inventing measurements.
-3. Evidence cards with multiple sources and per-source locators.
-4. A larger public, permissively licensed evaluation example with separate development/evaluation splits.
+1. Evidence cards with multiple sources and per-source locators.
+2. A larger public, permissively licensed evaluation example with separate development/evaluation splits.
+3. A result adapter for one openly documented research tool, with permission to redistribute its example data.
 
 ## Implemented in 0.1.1
 
 - Portable commands propagate successful and failing exit codes.
 - Repeatable published-asset verification workflow for Linux, Windows and Intel macOS; actual results are kept in docs/validation.md.
+
+## Implemented in 0.2.0
+
+- External measurement CSV import with exact source snapshots, typed checks, collision refusal, optional data/code hashes and per-group audit caching.
+- Cross-check imported values, labels, dataset/command provenance and group membership against the preserved CSV; explicitly warn that external commands were not rerun.
+- Computed classification course workflow with train-only model selection, test predictions, report and draft. Tiny self-authored toy data, not a research benchmark.
+- Public CSL-JSON metadata example and bilingual import walkthrough ([Issue #1](https://github.com/lashonbakker-crypto/papertrail-research/issues/1)).
+- Controlled malformed-CSV errors; fresh workspace guidance no longer creates a false missing citation.
 
 ## Later, requiring design and separate validation
 

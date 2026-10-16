@@ -42,7 +42,7 @@ def source_hashes(source):
                 require(kind == "blob" and mode in ("100644", "100755"), "Expected only regular tracked source files")
                 result[name.decode("utf-8")] = digest
         return result
-    directories = ("papertrail", "scripts", "tests", "docs", "templates", "prompts", "assets", ".github")
+    directories = ("papertrail", "scripts", "tests", "docs", "templates", "prompts", "assets", "examples", ".github")
     paths = [p for d in directories for p in (source / d).rglob("*") if p.is_file() and "__pycache__" not in p.parts and p.suffix != ".pyc"]
     paths += [source / n for n in ("README.md", "README.en.md", "pyproject.toml", "LICENSE", "AGENTS.md", "CONTRIBUTING.md", "CHANGELOG.md", "ROADMAP.md", ".gitignore")]
     return {p.relative_to(source).as_posix(): blob_hash(p.read_bytes()) for p in paths}
@@ -93,6 +93,20 @@ def verify(downloads, tag, source):
             require(created.returncode == 0, created.stderr or created.stdout)
             checked = call([pyz, "check", str(project), "--json"])
             require(checked.returncode == 0 and json.loads(checked.stdout)["counts"]["runs"] == 6, "Portable demo audit failed")
+            if "papertrail/results.py" in expected:
+                csv_source = work / "external-results.csv"
+                csv_source.write_text("method,metric,value,n\nfixture,accuracy,0.75,4\n", encoding="utf-8")
+                imported = call([pyz, "import-results", str(project), str(csv_source), "--run-id", "downloaded",
+                                 "--dataset", "teaching fixture", "--label", "toy", "--command", "NOT_EXECUTED"])
+                require(imported.returncode == 0, imported.stderr or imported.stdout)
+                snapshot = project / "artifacts/downloaded.source.csv"
+                require(snapshot.read_bytes() == csv_source.read_bytes(), "Portable import did not preserve CSV bytes")
+                checked = call([pyz, "check", str(project), "--json"])
+                require(checked.returncode == 0 and json.loads(checked.stdout)["counts"]["runs"] == 7, "Portable imported-results audit failed")
+                with snapshot.open("ab") as handle:
+                    handle.write(b"tampered")
+                changed = call([pyz, "check", str(project), "--json"])
+                require(changed.returncode == 2 and "artifact_error" in {i["code"] for i in json.loads(changed.stdout)["errors"]}, "Changed snapshot must fail audit")
             absent = call([pyz, "check", str(work / "missing"), "--json"])
             require(absent.returncode == 2 and json.loads(absent.stdout)["errors"], "Invalid project must return 2")
             with (project / "manuscript.md").open("a", encoding="utf-8") as handle:
@@ -101,6 +115,9 @@ def verify(downloads, tag, source):
             require(bad.returncode == 2 and "missing_reference" in {i["code"] for i in json.loads(bad.stdout)["errors"]}, "Missing citation must return 2")
             source_result = call(["-m", "papertrail", "demo", str(work / "source study")], work / "papertrail-research")
             require(source_result.returncode == 0, source_result.stderr or source_result.stdout)
+            if "examples/data/course.csv" in expected:
+                course = call(["scripts/course_example.py"], work / "papertrail-research")
+                require(course.returncode == 0 and "accuracy=0.25" in course.stdout and "accuracy=0.75" in course.stdout, course.stderr or course.stdout)
     print(f"{tag}: published checksums, {len(expected)} source files, portable bytes, version, demo, error exit codes and extracted source: OK")
 
 

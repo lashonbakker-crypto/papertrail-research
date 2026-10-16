@@ -1,0 +1,85 @@
+[
+  {
+    "id": "lewis2020",
+    "type": "article-journal",
+    "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+    "author": [
+      {
+        "literal": "Patrick Lewis"
+      },
+      {
+        "literal": "Ethan Perez"
+      },
+      {
+        "literal": "Aleksandra Piktus"
+      },
+      {
+        "literal": "Fabio Petroni"
+      },
+      {
+        "literal": "Vladimir Karpukhin"
+      },
+      {
+        "literal": "Naman Goyal"
+      },
+      {
+        "literal": "Heinrich Küttler"
+      },
+      {
+        "literal": "Mike Lewis"
+      },
+      {
+        "literal": "Wen-tau Yih"
+      },
+      {
+        "literal": "Tim Rocktäschel"
+      },
+      {
+        "literal": "Sebastian Riedel"
+      },
+      {
+        "literal": "Douwe Kiela"
+      }
+    ],
+    "issued": {
+      "date-parts": [
+        [
+          2020
+        ]
+      ]
+    },
+    "DOI": "10.48550/arXiv.2005.11401",
+    "URL": "https://arxiv.org/abs/2005.11401"
+  },
+  {
+    "id": "thakur2021",
+    "type": "article-journal",
+    "title": "BEIR: A Heterogenous Benchmark for Zero-shot Evaluation of Information Retrieval Models",
+    "author": [
+      {
+        "literal": "Nandan Thakur"
+      },
+      {
+        "literal": "Nils Reimers"
+      },
+      {
+        "literal": "Andreas Rücklé"
+      },
+      {
+        "literal": "Abhishek Srivastava"
+      },
+      {
+        "literal": "Iryna Gurevych"
+      }
+    ],
+    "issued": {
+      "date-parts": [
+        [
+          2021
+        ]
+      ]
+    },
+    "DOI": "10.48550/arXiv.2104.08663",
+    "URL": "https://arxiv.org/abs/2104.08663"
+  }
+]

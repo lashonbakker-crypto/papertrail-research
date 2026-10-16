@@ -29,6 +29,6 @@ def initialize(target, demo=False):
         write_new(target / "references.json", "[]\n")
         write_new(target / "evidence.csv", csv_text([], EVIDENCE_FIELDS))
         write_new(target / "experiments.csv", csv_text([], RUN_FIELDS))
-        write_new(target / "manuscript.md", "# 我的第一个科研项目\n\n## 问题\n\nTODO：我想检验什么？\n\n## 相关工作\n\nTODO：阅读原文，在 evidence.csv 记下证据，再写引用 [@citation-key]。\n\n## 方法与结果\n\nTODO：记录实验命令、数据版本和结果。\n\n## 局限\n\nTODO：结论适用于什么条件？\n")
+        write_new(target / "manuscript.md", "# 我的第一个科研项目\n\n## 问题\n\nTODO：我想检验什么？\n\n## 相关工作\n\nTODO：阅读原文，在 evidence.csv 记下证据，再写引用 `[@citation-key]`。\n\n## 方法与结果\n\nTODO：记录实验命令、数据版本和结果。\n\n## 局限\n\nTODO：结论适用于什么条件？\n")
     write_new(target / ".gitignore", "report*/\n.papertrail-*\n*.pdf\n.env*\n__pycache__/\n")
     return target

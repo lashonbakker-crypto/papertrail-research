@@ -16,7 +16,7 @@ def main():
     subprocess.run([sys.executable, str(ROOT / "scripts/build_zipapp.py")], check=True)
     dist = ROOT / "dist"
     archive = dist / f"papertrail-research-v{__version__}.zip"
-    included = ("papertrail", "scripts", "tests", "docs", "templates", "prompts", "assets", ".github")
+    included = ("papertrail", "scripts", "tests", "docs", "templates", "prompts", "assets", "examples", ".github")
     paths = [p for directory in included for p in (ROOT / directory).rglob("*") if p.is_file() and "__pycache__" not in p.parts and p.suffix != ".pyc"]
     paths += [ROOT / name for name in ("README.md", "README.en.md", "pyproject.toml", "LICENSE", "AGENTS.md", "CONTRIBUTING.md", "CHANGELOG.md", "ROADMAP.md", ".gitignore")]
     with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as handle:

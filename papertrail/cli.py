@@ -10,6 +10,7 @@ from .experiment import run_experiment
 from .project import initialize
 from .references import add_doi, import_csl
 from .report import export_report
+from .results import import_results
 from .storage import ProjectError, json_text
 
 
@@ -32,6 +33,14 @@ def build_parser():
     csl = commands.add_parser("import-csl", help="从 Zotero 等工具导入 CSL-JSON 文献元数据")
     csl.add_argument("project", type=Path)
     csl.add_argument("source", type=Path)
+    results = commands.add_parser("import-results", help="登记你自己的实验 CSV，保存原始快照并核对数值")
+    results.add_argument("project", type=Path)
+    results.add_argument("source", type=Path)
+    results.add_argument("--run-id", required=True)
+    results.add_argument("--dataset", required=True)
+    results.add_argument("--command", dest="reproduction_command", required=True, help="仅记录，不执行")
+    results.add_argument("--label", choices=("toy", "real"), required=True)
+    results.add_argument("--input", action="append", default=[], help="需要持续核对 SHA-256 的项目相对路径，可重复")
     doi = commands.add_parser("add-doi", help="显式联网从 Crossref 获取一条 DOI 元数据")
     doi.add_argument("project", type=Path)
     doi.add_argument("doi")
@@ -74,6 +83,11 @@ def main(argv=None):
         if args.command == "import-csl":
             added = import_csl(args.project, args.source)
             print(f"Imported {len(added)} reference(s). Read and verify the source papers.")
+            return 0
+        if args.command == "import-results":
+            result = import_results(args.project, args.source, run_id=args.run_id, dataset=args.dataset,
+                                    command=args.reproduction_command, label=args.label, inputs=args.input)
+            print(f"Recorded {len(result['metrics'])} measurement(s); original CSV preserved. Command was not executed.")
             return 0
         if args.command == "add-doi":
             print(json_text(add_doi(args.project, args.doi, args.key)), end="")

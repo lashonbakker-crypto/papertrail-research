@@ -8,7 +8,7 @@
 
 ## 2. 先整理文献，再写论点
 
-导入 CSL-JSON 或手工填写 `references.json`。每条记录至少有 `key`、`title`、`authors`、`year`、`url`；有 DOI 就记录 DOI。读过并核对来源后可补 `metadata_source`、`checked_at`。
+导入 CSL-JSON 或手工填写 `references.json`；首次导入可用[随附 CSL 示例](06-zotero-import.md)。每条记录至少有 `key`、`title`、`authors`、`year`、`url`；有 DOI 就记录 DOI。读过并核对来源后可补 `metadata_source`、`checked_at`。
 
 在 `evidence.csv` 填：
 
@@ -29,7 +29,9 @@
 
 内置实验会自动填六条结果，同时记录输入数据和实现的 SHA-256、Python 版本及逐查询排名。查看 JSON 才能知道总分背后发生了什么。
 
-自己的实验附件可以是 JSON、CSV 或文本。通用附件只校验文件指纹，本版本只有内置 `papertrail-retrieval-v1` schema 额外验证指标和输入数据。手工填真实实验表时，必须自己保证指标定义、计算、数据来源和切分正确。
+自己的实验优先使用 [`import-results`](05-own-experiments.md)：从 `method,metric,value,n` CSV 保存原始快照与 `papertrail-results-v1` 映射，检查器复核快照、实验表和可选输入指纹。命令字段不会被执行；数据性质是显式自报，定义、计算和切分仍需你独立复核。
+
+手工登记的通用 JSON/CSV/文本附件也可使用，但未知结构只校验文件指纹，并提醒数值未验证。已知的内置 `papertrail-retrieval-v1` 和导入 `papertrail-results-v1` 才额外验证数值。
 
 修改输入数据会让旧实验的输入校验失败。要研究新数据，保存版本化文件并手工登记自己的实验，或在新项目目录复制/调整教学语料；不要用新的数据覆盖旧记录并继续引用旧分数。
 

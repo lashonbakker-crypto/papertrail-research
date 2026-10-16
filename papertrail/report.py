@@ -45,7 +45,7 @@ def render_html(result):
     runs = _table(("结果 ID", "方法 / 指标", "数值", "样本数", "数据性质"), [(f'<code>{escape(r["run_id"])}</code>', f'{escape(r["method"])} / {escape(r["metric"])}', escape(r["value"]), escape(r["n"]), "教学数据" if r["label"] == "toy" else "自报真实数据") for r in result["runs"]])
     charts = []
     for row in result["runs"]:
-        if row["metric"] not in ("MRR", "Recall@1", "Recall@3"):
+        if row["metric"] not in ("MRR", "Recall@1", "Recall@3", "accuracy", "precision", "recall"):
             continue
         try:
             value = float(row["value"])
@@ -55,7 +55,7 @@ def render_html(result):
             continue
         width = f"{value * 100:.3f}%"
         charts.append(f'<div class="chart-row"><div><b>{escape(row["method"])} · {escape(row["metric"])}</b><span>{value:.4f} / 1.0000</span></div><div class="track"><div class="bar" style="width:{width}"></div></div><small>{escape(row["run_id"])} · n={escape(row["n"])} · {escape(row["label"])}</small></div>')
-    chart = "".join(charts) or "<p>尚无可展示的 MRR / Recall 结果。</p>"
+    chart = "".join(charts) or "<p>尚无可展示的 0–1 比率指标结果。</p>"
     return f'''<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
@@ -64,7 +64,7 @@ def render_html(result):
 *{{box-sizing:border-box}}body{{margin:0;background:#f3f5f8;color:#15233a;font-family:system-ui,-apple-system,"Microsoft YaHei",sans-serif;line-height:1.65}}main{{max-width:1140px;margin:auto;padding:36px 24px 70px}}header{{background:#102239;border-radius:26px;padding:38px;color:#f4f8ff;position:relative;overflow:hidden}}.brand{{letter-spacing:3px;font-size:12px;font-weight:700;color:#80dec2}}h1{{font-size:clamp(25px,4vw,38px);line-height:1.3;margin:16px 0}}header p{{max-width:730px;color:#c0cce0;margin:0}}.status{{display:inline-block;background:#d6f5e8;color:#135d43;padding:5px 14px;border-radius:20px;font-weight:700;margin-top:24px}}.status.fail{{background:#ffdbd7;color:#84291e}}.stats{{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin:24px 0}}.stat{{background:white;border:1px solid #e2e7ef;padding:20px;border-radius:16px}}.stat span{{display:block;font-size:13px;color:#617086}}.stat strong{{font-size:32px}}section{{background:white;border:1px solid #e2e7ef;padding:26px;border-radius:18px;margin:20px 0}}h2{{font-size:21px;margin:0 0 16px}}.section-note{{color:#647187;font-size:14px}}.issue{{display:grid;grid-template-columns:190px 1fr;gap:8px;border-left:4px solid #dda33e;background:#fff9eb;padding:12px 16px;margin:9px 0;font-size:13px}}.issue.error{{border-color:#cf5544;background:#fff0ee}}.issue code{{grid-column:2;color:#69758a}}.issue b{{font-family:ui-monospace,monospace;font-size:12px;overflow-wrap:anywhere}}table{{border-collapse:collapse;width:100%;font-size:13px}}th{{text-align:left;background:#f1f5fa;color:#66758b;font-weight:600}}th,td{{padding:12px;vertical-align:top;border-bottom:1px solid #e8edf4;overflow-wrap:anywhere}}.scroll{{overflow:auto}}a{{color:#176f8c;text-decoration:none}}code{{font-family:ui-monospace,monospace;font-size:12px}}.chart-row{{margin:19px 0}}.chart-row>div:first-child{{display:flex;justify-content:space-between;gap:15px;font-size:14px}}.chart-row span{{font-variant-numeric:tabular-nums;color:#69768b}}.track{{background:#eaf0f6;height:14px;border-radius:20px;margin:7px 0;overflow:hidden}}.bar{{height:100%;background:linear-gradient(90deg,#15977d,#64c7ac);border-radius:20px}}small{{color:#6c7a90}}.two{{display:grid;grid-template-columns:1fr 1fr;gap:20px}}footer{{color:#647187;font-size:12px;text-align:center;margin-top:25px}}@media(max-width:700px){{main{{padding:18px 14px 40px}}header{{padding:26px}}.stats{{grid-template-columns:repeat(2,1fr)}}section{{padding:18px}}.issue{{grid-template-columns:1fr}}.issue code{{grid-column:1}}.two{{grid-template-columns:1fr}}}}
 </style></head><body><main><header><div class="brand">PAPERTRAIL / RESEARCH WITH A RECORD</div><h1>{escape(result["title"])}</h1><p>{escape(result.get("question", "文献 → 证据 → 实验 → 草稿"))}</p><span class="status {"fail" if errors else ""}">{status} · {len(errors)} 个错误 / {len(warnings)} 项提醒</span></header>
 <div class="stats">{cards}</div><section><h2>01 / 提交给导师前，先看这里</h2><p class="section-note">结构检查记录引用和附件是否对得上。元数据核对、人工阅读登记、研究有效性是不同的事情。</p>{issues}</section>
-<section><h2>02 / 结果可追溯</h2><p class="section-note">MRR 与 Recall 坐标固定为 0–1；教学数据与真实研究必须区分。图表只展示登记值，不能证明方法优越性。</p>{chart}{runs}</section>
+<section><h2>02 / 结果可追溯</h2><p class="section-note">MRR、Recall、accuracy、precision、recall 坐标固定为 0–1；教学数据与自报真实研究必须区分。图表只展示登记值，不能证明方法优越性。</p>{chart}{runs}</section>
 <section><h2>03 / 论点背后的证据</h2>{evidence}</section><section><h2>04 / 文献来源</h2>{refs}</section>
 <footer>PaperTrail {escape(__version__)} · 本地生成，零外部资源 · SHA-256 检查内容一致性，不能证明数据真实性或发布者身份</footer></main></body></html>'''
 

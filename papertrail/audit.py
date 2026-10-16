@@ -6,6 +6,7 @@ from decimal import Decimal, InvalidOperation
 
 from .project import EVIDENCE_FIELDS, RUN_FIELDS
 from .references import KEY_PATTERN, normalize_doi
+from .results import SCHEMA as RESULTS_SCHEMA, validate_metric, verified_measurements
 from .storage import ProjectError, project_path, read_csv, read_json, read_text, sha256
 
 
@@ -113,19 +114,16 @@ def audit(root):
         issue("error", "missing_claim", "manuscript.md", f"论点 {key} 不在证据表中")
 
     run_ids, artifact_cache = set(), {}
+    artifact_runs = {}
+    for row in runs:
+        artifact_runs.setdefault(row["artifact"], set()).add(row["run_id"])
     for index, row in enumerate(runs, 2):
         where = f"experiments.csv:{index}"
         run_ids.add(row["run_id"])
         if not KEY_PATTERN.fullmatch(row["run_id"]) or not row["method"].strip() or not row["metric"].strip():
             issue("error", "invalid_run", where, "实验需要有效 run_id、method、metric")
         try:
-            if not re.fullmatch(r"[1-9]\d*", row["n"]):
-                raise ValueError("n must be a positive integer")
-            value = Decimal(row["value"])
-            if not value.is_finite():
-                raise ValueError("metric value must be finite")
-            if row["metric"] in ("MRR", "Recall@1", "Recall@3", "accuracy", "precision", "recall") and not 0 <= value <= 1:
-                raise ValueError("ratio metric must lie between 0 and 1")
+            validate_metric(row["metric"], row["value"], row["n"])
         except (ValueError, InvalidOperation) as error:
             issue("error", "invalid_metric", where, str(error))
         if row["label"] not in ("toy", "real"):
@@ -139,19 +137,41 @@ def audit(root):
             if not re.fullmatch(r"[0-9a-f]{64}", row["sha256"]):
                 raise ProjectError("缺少有效的 SHA-256")
             if row["artifact"] not in artifact_cache:
-                actual = sha256(artifact)
-                details = read_json(artifact) if artifact.suffix == ".json" else None
-                artifact_cache[row["artifact"]] = actual, details
-            actual, details = artifact_cache[row["artifact"]]
+                try:
+                    actual = sha256(artifact)
+                    details = read_json(artifact) if artifact.suffix == ".json" else None
+                    schema = details.get("schema") if isinstance(details, dict) else None
+                    measurements = None
+                    if schema == RESULTS_SCHEMA:
+                        measurements = verified_measurements(root, details)
+                        if artifact_runs[row["artifact"]] != set(measurements):
+                            raise ProjectError("导入结果组的登记记录不完整或包含额外 ID")
+                        issue("warning", "external_command_unverified", row["artifact"], "外部实验命令未重新执行；本检查只覆盖记录与快照的一致性，仍需人工复现")
+                    elif schema == "papertrail-retrieval-v1":
+                        measurements = details.get("metrics")
+                        if not isinstance(measurements, dict) or not isinstance(details.get("inputs"), list):
+                            raise ProjectError("内置实验附件格式错误")
+                        for item in details["inputs"]:
+                            if not isinstance(item, dict) or not isinstance(item.get("path"), str) or not isinstance(item.get("sha256"), str):
+                                raise ProjectError("内置实验输入记录格式错误")
+                            if sha256(project_path(root, item["path"])) != item["sha256"]:
+                                raise ProjectError(f"实验输入数据已改变: {item['path']}")
+                    else:
+                        issue("warning", "unverified_result_values", row["artifact"], "附件仅核对文件指纹，未按已知格式复核数值，请人工核对")
+                    artifact_cache[row["artifact"]] = (actual, details, measurements, None)
+                except (OSError, ValueError, UnicodeError, KeyError, TypeError, InvalidOperation) as error:
+                    artifact_cache[row["artifact"]] = (None, None, None, str(error))
+            actual, details, measurements, load_error = artifact_cache[row["artifact"]]
+            if load_error is not None:
+                raise ProjectError(load_error)
             if actual != row["sha256"]:
                 raise ProjectError("附件内容已改变，与实验登记的 SHA-256 不一致")
-            if isinstance(details, dict) and details.get("schema") == "papertrail-retrieval-v1":
-                measurement = details.get("metrics", {}).get(row["run_id"])
-                if not measurement or any(str(measurement.get(k)) != row[k] for k in ("method", "metric", "n", "label")) or Decimal(str(measurement.get("value"))) != Decimal(row["value"]):
+            if measurements is not None:
+                measurement = measurements.get(row["run_id"])
+                if not isinstance(measurement, dict) or any(str(measurement.get(k)) != row[k] for k in ("method", "metric", "n", "label")) or Decimal(str(measurement.get("value"))) != Decimal(row["value"]):
                     raise ProjectError("实验表数值与原始结果附件不一致")
-                for item in details.get("inputs", []):
-                    if sha256(project_path(root, item["path"])) != item["sha256"]:
-                        raise ProjectError(f"实验输入数据已改变: {item['path']}")
+                if details.get("schema") == RESULTS_SCHEMA and any(details[field] != row[field] for field in ("dataset", "command")):
+                    raise ProjectError("实验表的数据说明或复现命令与导入附件不一致")
         except (OSError, ValueError, UnicodeError, KeyError, TypeError, InvalidOperation) as error:
             issue("error", "artifact_error", where, str(error))
     used_runs = set(re.findall(r"\{\{run:([A-Za-z][A-Za-z0-9_.:-]*)\}\}", manuscript))

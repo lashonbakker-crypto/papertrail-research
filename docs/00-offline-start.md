@@ -6,7 +6,7 @@
 
 需要 Python 3.10 或以上，不需要安装第三方包，也不需要 API key。
 
-使用完整离线包时先解压；使用 Release 源码归档 `papertrail-research-v0.1.1.zip` 时同样先解压。打开解压后的文件夹终端：
+使用完整离线包时先解压；使用 Release 源码归档 `papertrail-research-v0.2.0.zip` 时同样先解压。打开解压后的文件夹终端：
 
 ```bash
 cd papertrail-research
@@ -23,6 +23,12 @@ python -m papertrail demo my-first-study
 2. 在 `manuscript.md` 最后添加一行 `参考 [@notExists2026]`。运行 `python -m papertrail check my-first-study`，应看到 `missing_reference` 和退出码 2。删掉这一行，再检查应恢复为 0。
 3. 打开 `experiments.csv`，找到 `artifact` 与 `sha256` 两列，再看 `artifacts/demo.json`。表中的数值、原始结果和输入文件指纹应该对得上。
 4. 修改 JSON 附件里的任意字符，再运行检查。它应报告 `artifact_error`。用一个全新的项目目录重跑 demo，保留旧文件方便对比。
+
+## 从演示转到自己的记录
+
+源码包中运行 `python scripts/course_example.py course-study`，会实际计算一个课程小实验，保留数据、代码和逐条预测，导入自己的格式化指标，再生成报告。见[实验导入教程](05-own-experiments.md)。
+
+只练文献导入时，从[Zotero 示例](06-zotero-import.md)开始。单文件版支持 `import-results`，课程脚本和公开 CSL 文件位于源码包的 scripts/examples 中。
 
 ## 哪些内容适合你现在学
 

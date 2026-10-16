@@ -33,7 +33,8 @@ The graphic above is a data overview generated from a real demo audit, not a bro
 |---|---|
 | Citation checks | Detect unknown bracketed Markdown citation keys such as `[@missing2026]`; skip fenced/inline code and HTML comments |
 | Evidence cards | Record claim, reference key, section/page locator, your own note, and an explicit human review state |
-| Provenance checks | Check artifact SHA-256; built-in experiment also checks table values against the original JSON and input hashes |
+| Provenance checks | Check artifact SHA-256; built-in and imported CSV schemas also verify registered values and input hashes |
+| Your experiment CSV | `import-results` preserves exact original bytes, assigns result IDs, and connects them to reports/drafts |
 | Zotero handoff | Import CSL-JSON, refuse key/DOI collisions without partial imports |
 | Explicit DOI lookup | Fetch one Crossref metadata record only when `add-doi` is requested |
 | Reproducible experiment | Compare term-overlap and smoothed TF-IDF cosine ranking on a handwritten English toy corpus |
@@ -50,6 +51,22 @@ python -m papertrail report my-research --out my-research/report-v1
 Only `add-doi` performs networking. Other commands run locally. Existing project/report destinations and experiment IDs are not overwritten. CSL keys use `citation-key`, a valid `id`, or sequential `refN` fallback. An import does not mark papers reviewed.
 
 Download `papertrail.pyz` and `SHA256SUMS.txt` from [Releases](https://github.com/lashonbakker-crypto/papertrail-research/releases/latest), verify the checksum, and run `python papertrail.pyz demo my-first-study`. A Python interpreter is still required. See [commands and integrity checks](docs/03-cli.md).
+
+## Connect your own measurements
+
+```bash
+python scripts/course_example.py course-study
+```
+
+The source example actually computes a majority baseline (accuracy 0.25) and a training-selected threshold (accuracy 0.75), saves code/data/per-test predictions, imports the CSV, and exports a report. Ten self-authored toy rows demonstrate the workflow; four test rows cannot establish generalization or method superiority. Model selection uses training rows only. See the [bilingual walkthrough](docs/05-own-experiments.md).
+
+```bash
+python -m papertrail import-results my-research results.csv --run-id trial1 --dataset "specific data version and split" --label toy --command "python my_experiment.py"
+```
+
+Initialize `my-research` first and supply your measured CSV with the exact header `method,metric,value,n`. Repeat `--input data/FILE` to track project-relative data/code hashes. The original CSV snapshot, JSON mapping and table values are cross-checked. Labels are self-declared; commands are never executed. Unknown artifact schemas warn that only their fingerprints were checked. The complete course exercise is in the source archive; the portable download also supports `import-results`.
+
+For Zotero, try the supplied [CSL-JSON example and bilingual steps](docs/06-zotero-import.md) before using your own export. Importing metadata never marks the paper as independently checked or read.
 
 ## Honest scope
 
@@ -69,6 +86,7 @@ Generated reports have no external scripts, fonts or telemetry. The project supp
 
 ```bash
 python -m unittest discover -s tests -v
+python scripts/course_example.py
 python scripts/build_zipapp.py
 ```
 
