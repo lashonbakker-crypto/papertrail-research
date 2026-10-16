@@ -1,5 +1,7 @@
 ## Unreleased
 
+- Detect case-insensitive TODO markers in draft prose while avoiding matches embedded in English words; add regression tests.
+
 - Add a read-only `coverage PROJECT [--json]` summary for cited references, evidence cards and recorded results. Highlight pending manual checks and optional draft links without assigning a scientific quality score.
 - Add regression tests for demo coverage, review-state changes, code-fence exclusion, broken inputs, CLI exit status and read-only behavior.
 
