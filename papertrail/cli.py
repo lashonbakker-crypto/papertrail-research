@@ -6,6 +6,7 @@ from pathlib import Path
 
 from . import __version__
 from .audit import audit
+from .coverage import coverage
 from .experiment import run_experiment
 from .project import initialize
 from .references import add_doi, import_csl
@@ -24,6 +25,9 @@ def build_parser():
     check = commands.add_parser("check", help="检查文献、证据、结果和附件的一致性")
     check.add_argument("project", type=Path)
     check.add_argument("--json", action="store_true")
+    cv = commands.add_parser("coverage", help="只读统计文献、证据卡和实验在草稿中的覆盖情况")
+    cv.add_argument("project", type=Path)
+    cv.add_argument("--json", action="store_true")
     report = commands.add_parser("report", help="生成本地 HTML / JSON / Markdown 报告")
     report.add_argument("project", type=Path)
     report.add_argument("--out", type=Path)
@@ -93,6 +97,20 @@ def main(argv=None):
             print(json_text(add_doi(args.project, args.doi, args.key)), end="")
             return 0
         result = audit(args.project)
+        if args.command == "coverage":
+            summary = coverage(result)
+            if args.json:
+                print(json_text(summary), end="")
+            else:
+                print(f"Coverage: {summary['title']}")
+                for key, value in summary["counts"].items():
+                    print(f"  {key}: {value}")
+                for gap in summary["gaps"]:
+                    print(f"  [{gap['priority']}] {gap['kind']} ({gap['item']}): {gap['action']}")
+                for problem in summary["errors"]:
+                    print(f"  [ERROR] {problem['code']} ({problem['location']}): {problem['message']}")
+                print(summary["disclaimer"])
+            return 2 if summary["errors"] else 0
         if args.command == "check" and args.json:
             print(json_text(result), end="")
         else:

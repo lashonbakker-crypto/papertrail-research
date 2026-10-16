@@ -7,6 +7,7 @@
 | `init PROJECT` | 创建空白工作目录 | 本地写新目录；目录已存在就拒绝 |
 | `demo PROJECT` | 创建教学输入，运行实验，生成报告 | 本地写新目录 |
 | `check PROJECT [--json]` | 校验选定结构和文件一致性 | 本地只读 |
+| `coverage PROJECT [--json]` | 只读统计文献引用、证据卡人工核对及草稿连接情况，列出下一步提醒；[详细说明](07-coverage.md) | 本地只读 |
 | `report PROJECT [--out NEW_DIR]` | 先检查，再导出 HTML/JSON/两份 Markdown | 本地只读输入、写新报告目录 |
 | `experiment PROJECT [--run-id NEW_ID]` | 运行自编英文语料的两种词法检索 | 本地写新附件并更新 experiments.csv |
 | `import-csl PROJECT EXPORT.json` | 导入 CSL-JSON 文献 | 本地读取导出，原子替换 references.json；碰撞不保存 |

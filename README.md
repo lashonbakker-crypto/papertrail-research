@@ -28,10 +28,13 @@
 | 实验结果复制错了、原始文件变了 | 导入自己的结果 CSV，保存原始快照，核对数值、附件和可选输入指纹 |
 | 文献在 Zotero，草稿在另一个工具 | 导入标准 CSL-JSON；生成适合后续 Pandoc/编辑器处理的 Markdown 草稿 |
 | 已有自己的实验，怎么连接到草稿 | `import-results` 登记实际指标；`{{run:ID}}` 在报告草稿中展开 |
+| 不知道哪些证据仍待核对、哪些还没有用在正文 | `coverage` 生成只读覆盖情况与优先处理清单，不把登记状态当作科学结论 |
 | 不知道第一次实验从哪开始 | 一条命令运行 8 个文档 / 12 个查询的英文检索教学实验 |
 | 组会和申请材料只剩一个 PDF | 导出可视化 HTML 检查报告、JSON 结果和 Markdown 科研交接记录 |
 
 ![Real command output from the working demo](assets/demo.gif)
+
+快速找出下一步：`python -m papertrail coverage my-first-study` 查看**人工待核对、缺失定位与尚未接入草稿的记录**。这是登记覆盖情况，不是科学质量评分。详见[证据覆盖率说明](docs/07-coverage.md)。
 
 ## 5 分钟跑通
 
