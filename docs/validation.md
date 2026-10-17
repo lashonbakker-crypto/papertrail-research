@@ -6,6 +6,14 @@
 - The four exported report files remain compatible. Coverage does not execute commands, upload records or establish scientific validity. HTML structure and escaping are tested; browser rendering inspection of local report files is still unavailable in this environment.
 - A fresh installed 0.3.0 package passed module/command, resource, imported CSV, coverage and HTML checklist checks away from the source tree. Locally built portable/source downloads passed the verification script, including coverage counts and checklist content, imported snapshot tampering and extracted-source examples. These were local builds; public-download and remote CI evidence is recorded separately. Historical evidence below applies only to its exact source.
 
+## 0.3.0 matrix CI and public downloads — 2026-10-17
+
+- Implementation `8b3a56e78ce0cf90fc906fb769a01a4950a81ed7` passed all five jobs in [CI run 38998249237](https://github.com/lashonbakker-crypto/papertrail-research/actions/runs/38998249237): Linux / Python 3.10, 3.12, 3.14; Windows / 3.12; Intel macOS / 3.12. Each job passed 84 behavior tests, installed resources/coverage/import checks, portable builds and the course example.
+- [Release run 38998381521](https://github.com/lashonbakker-crypto/papertrail-research/actions/runs/38998381521) published [v0.3.0](https://github.com/lashonbakker-crypto/papertrail-research/releases/tag/v0.3.0) from that exact tested commit, with source ZIP, pyz and SHA256SUMS.txt.
+- [Public-download verification 38998501152](https://github.com/lashonbakker-crypto/papertrail-research/actions/runs/38998501152) passed on Linux, Windows and Intel macOS / Python 3.12. Every job actually downloaded the public attachments, matched checksums and **68 source files** against tagged Git blobs, verified portable bytes/version and success/error exits, and exercised coverage counts, the HTML checklist, CSV import/snapshot tampering and extracted-source examples. Job summaries and all three logs were inspected.
+- These results verify the shipped local workflow. They do not establish browser rendering quality, Apple Silicon support, real model calls, research validity or independent replication of an external experiment.
+
+
 
 ## 0.2.0 本地验证 — 2026-10-16
 
