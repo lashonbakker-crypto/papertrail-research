@@ -1,5 +1,12 @@
 # Validation record
 
+## 0.3.0 local validation — 2026-10-17
+
+- Linux / Python 3.12.14: **84 behavior tests passed**. Audit and coverage agree on mixed-case TODO, Chinese notes and ignored code/comments in a real workspace. HTML connections include optional unused metrics, pending cards and escaped untrusted IDs; unreadable inputs produce no inferred counts.
+- The four exported report files remain compatible. Coverage does not execute commands, upload records or establish scientific validity. HTML structure and escaping are tested; browser rendering inspection of local report files is still unavailable in this environment.
+- A fresh installed 0.3.0 package passed module/command, resource, imported CSV, coverage and HTML checklist checks away from the source tree. Locally built portable/source downloads passed the verification script, including coverage counts and checklist content, imported snapshot tampering and extracted-source examples. These were local builds; public-download and remote CI evidence is recorded separately. Historical evidence below applies only to its exact source.
+
+
 ## 0.2.0 本地验证 — 2026-10-16
 
 - Linux / Python 3.12.14：**73 项行为测试通过**。新增覆盖 CSV 原字节快照（BOM/CRLF/引号）、非法数值/样本数/列/引号、超限写入预检、重复 ID/附件保留、表值/元数据/输入变动、同组记录缺失、未知附件提醒、CLI 退出码、安装版与单文件导入。

@@ -34,7 +34,7 @@
 
 ![Real command output from the working demo](assets/demo.gif)
 
-快速找出下一步：`python -m papertrail coverage my-first-study` 查看**人工待核对、缺失定位与尚未接入草稿的记录**。这是登记覆盖情况，不是科学质量评分。详见[证据覆盖率说明](docs/07-coverage.md)。
+快速找出下一步：`python -m papertrail coverage my-first-study` 查看**人工待核对、缺失定位与尚未接入草稿的记录**。HTML 报告也会显示同一份“写作前的连接检查”，区分待复核与可选连接。这是登记覆盖情况，不是科学质量评分。详见[证据覆盖率说明](docs/07-coverage.md)。
 
 ## 5 分钟跑通
 

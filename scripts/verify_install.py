@@ -18,6 +18,11 @@ def main():
         assert report["errors"] == []
         assert report["counts"]["runs"] == 6
         assert (project / "report/draft.md").is_file()
+        covered = subprocess.run(["papertrail", "coverage", str(project), "--json"], cwd=directory, capture_output=True, text=True, encoding="utf-8")
+        assert covered.returncode == 0, covered.stderr
+        counts = json.loads(covered.stdout)["counts"]
+        assert counts["references_cited"] == 2 and counts["results_used_in_draft"] == 2
+        assert 'id="coverage"' in (project / "report/index.html").read_text(encoding="utf-8")
         source = Path(directory) / "own-results.csv"
         source.write_text("method,metric,value,n\nfixture,accuracy,0.75,4\n", encoding="utf-8")
         command = [sys.executable, "-m", "papertrail", "import-results", str(project), str(source),

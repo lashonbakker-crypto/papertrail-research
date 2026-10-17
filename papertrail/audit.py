@@ -27,6 +27,11 @@ def prose_only(text):
     return "\n".join(result)
 
 
+def has_unfinished_draft(prose):
+    """Recognize TODO notes consistently, without matching longer English words."""
+    return bool(re.search(r"(?<![A-Za-z])TODO(?![A-Za-z])|待补", prose, flags=re.IGNORECASE))
+
+
 def audit(root):
     errors, warnings = [], []
 
@@ -177,7 +182,7 @@ def audit(root):
     used_runs = set(re.findall(r"\{\{run:([A-Za-z][A-Za-z0-9_.:-]*)\}\}", manuscript))
     for key in sorted(used_runs - run_ids):
         issue("error", "missing_run", "manuscript.md", f"结果 {key} 不在实验表中")
-    if "TODO" in manuscript or "待补" in manuscript:
+    if has_unfinished_draft(manuscript):
         issue("warning", "unfinished_draft", "manuscript.md", "草稿包含 TODO / 待补内容")
     if not evidence:
         issue("warning", "no_evidence", "evidence.csv", "还没有证据卡")

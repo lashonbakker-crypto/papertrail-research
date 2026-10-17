@@ -93,6 +93,12 @@ def verify(downloads, tag, source):
             require(created.returncode == 0, created.stderr or created.stdout)
             checked = call([pyz, "check", str(project), "--json"])
             require(checked.returncode == 0 and json.loads(checked.stdout)["counts"]["runs"] == 6, "Portable demo audit failed")
+            if "papertrail/coverage.py" in expected:
+                covered = call([pyz, "coverage", str(project), "--json"])
+                require(covered.returncode == 0, covered.stderr or covered.stdout)
+                counts = json.loads(covered.stdout)["counts"]
+                require(counts["references_cited"] == 2 and counts["results_used_in_draft"] == 2, "Portable coverage counts failed")
+                require('id="coverage"' in (project / "report/index.html").read_text(encoding="utf-8"), "Report lacks the coverage checklist")
             if "papertrail/results.py" in expected:
                 csv_source = work / "external-results.csv"
                 csv_source.write_text("method,metric,value,n\nfixture,accuracy,0.75,4\n", encoding="utf-8")

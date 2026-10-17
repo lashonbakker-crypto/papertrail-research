@@ -8,9 +8,11 @@
 - Original toy retrieval data and computed ranking results.
 - Chinese workflow, student learning steps and contribution templates.
 
-## Implemented after 0.2.0 (unreleased)
+## Implemented in 0.3.0
 
 - Read-only evidence coverage report and optional action list (`coverage`), with machine-readable JSON output and tests.
+- The same connections and next steps in self-contained HTML reports, with untrusted IDs escaped.
+- Shared case-insensitive draft reminder detection across audit and coverage.
 
 ## Next small contributions
 

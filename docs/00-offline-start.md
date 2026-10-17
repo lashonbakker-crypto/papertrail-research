@@ -6,7 +6,7 @@
 
 需要 Python 3.10 或以上，不需要安装第三方包，也不需要 API key。
 
-使用完整离线包时先解压；使用 Release 源码归档 `papertrail-research-v0.2.0.zip` 时同样先解压。打开解压后的文件夹终端：
+使用完整离线包时先解压；使用 Release 源码归档 `papertrail-research-v0.3.0.zip` 时同样先解压。打开解压后的文件夹终端：
 
 ```bash
 cd papertrail-research

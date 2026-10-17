@@ -5,7 +5,7 @@ This is a bookkeeping report, not an assessment of evidence quality.
 
 import re
 
-from .audit import prose_only
+from .audit import has_unfinished_draft, prose_only
 
 CITATION_KEY = re.compile(r"(?<![\w@])@([A-Za-z][A-Za-z0-9_.:-]*)")
 BRACKET_GROUP = re.compile(r"\[([^\]\n]+)\]")
@@ -76,7 +76,7 @@ def coverage(audit_result):
     for key in sorted(ref_keys - cited - card_ref_keys):
         gap("reference_unlinked", key, "Cite this reference or link it to an evidence card if relevant.", "optional")
 
-    if re.search(r"(?<![A-Za-z])TODO(?![A-Za-z])|待补", prose, flags=re.IGNORECASE):
+    if has_unfinished_draft(prose):
         gap("unfinished_draft", "manuscript.md", "Resolve the remaining TODO / 待补 notes before sharing the draft.", "review")
 
     return {

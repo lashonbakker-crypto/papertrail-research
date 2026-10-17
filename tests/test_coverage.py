@@ -11,6 +11,7 @@ from papertrail.audit import audit
 from papertrail.coverage import coverage
 from papertrail.experiment import run_experiment
 from papertrail.project import EVIDENCE_FIELDS, initialize
+from papertrail.report import render_html
 from papertrail.storage import csv_text, read_csv, replace_text
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -86,6 +87,23 @@ class CoverageTests(unittest.TestCase):
         broken = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, encoding="utf-8")
         self.assertEqual(2, broken.returncode, broken.stderr)
         self.assertIn("missing_reference", {e["code"] for e in json.loads(broken.stdout)["errors"]})
+
+    def test_html_report_includes_optional_connections_and_escaped_pending_cards(self):
+        result = audit(self.root)
+        result["evidence"][0].update(claim_id='<img src=x onerror="bad()">', reviewed="no", locator="")
+        rendered = render_html(result)
+        self.assertIn("写作前的连接检查", rendered)
+        self.assertIn("可选连接", rendered)
+        self.assertIn("待复核", rendered)
+        self.assertIn("demo-overlap-r1", rendered)
+        self.assertNotIn("<img", rendered)
+        self.assertIn("&lt;img", rendered)
+
+    def test_invalid_project_report_does_not_infer_coverage(self):
+        (self.root / "evidence.csv").write_text("broken,header\n", encoding="utf-8")
+        rendered = render_html(audit(self.root))
+        self.assertIn("无法统计", rendered)
+        self.assertNotIn("对应记录总数", rendered)
 
 
 if __name__ == "__main__":

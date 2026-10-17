@@ -51,6 +51,6 @@ python papertrail.pyz --version
 python papertrail.pyz demo my-first-study
 ```
 
-应看到 `SHA-256 OK` 与 `papertrail 0.2.0`。校验文件同时列出单文件版和源码包，上述命令只核对 `papertrail.pyz`，不要求你下载源码包。校验失败时重新获取同一 Release 的两份附件，校验通过后再运行。它检查下载内容，不是作者身份签名。pyz 仍需要 Python 3.10+。
+应看到 `SHA-256 OK` 与 `papertrail 0.3.0`。校验文件同时列出单文件版和源码包，上述命令只核对 `papertrail.pyz`，不要求你下载源码包。校验失败时重新获取同一 Release 的两份附件，校验通过后再运行。它检查下载内容，不是作者身份签名。pyz 仍需要 Python 3.10+。
 
 `v0.1.0` 的单文件入口曾忽略命令返回码，发现错误时仍可能返回 `0`。使用 `v0.1.1` 或以上：正常检查为 `0`，未知引用或不存在的项目应返回 `2`；终端输出和进程状态都要检查。

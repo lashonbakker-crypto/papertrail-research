@@ -53,7 +53,7 @@ Only `add-doi` performs networking. Other commands run locally. Existing project
 
 Download `papertrail.pyz` and `SHA256SUMS.txt` from [Releases](https://github.com/lashonbakker-crypto/papertrail-research/releases/latest), verify the checksum, and run `python papertrail.pyz demo my-first-study`. A Python interpreter is still required. See [commands and integrity checks](docs/03-cli.md).
 
-Use `python -m papertrail coverage my-first-study` for a read-only [evidence coverage report](docs/07-coverage.md), including records awaiting human review and optionally unlinked draft material. Coverage is not a research-quality score.
+Use `python -m papertrail coverage my-first-study` for a read-only [evidence coverage report](docs/07-coverage.md), including records awaiting human review and optionally unlinked draft material. The HTML report presents the same counts and checklist. Coverage is not a research-quality score.
 
 ## Connect your own measurements
 
