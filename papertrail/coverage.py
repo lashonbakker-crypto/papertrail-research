@@ -76,7 +76,7 @@ def coverage(audit_result):
     for key in sorted(ref_keys - cited - card_ref_keys):
         gap("reference_unlinked", key, "Cite this reference or link it to an evidence card if relevant.", "optional")
 
-    if "TODO" in prose or "待补" in prose:
+    if re.search(r"(?<![A-Za-z])TODO(?![A-Za-z])|待补", prose, flags=re.IGNORECASE):
         gap("unfinished_draft", "manuscript.md", "Resolve the remaining TODO / 待补 notes before sharing the draft.", "review")
 
     return {
